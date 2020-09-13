@@ -7,7 +7,11 @@ class ContactDetailPage extends React.Component {
             contact: null
         }
     }
-
+    render(){
+        return(
+            <h1>contato detalhe</h1>
+        )
+    }
 }
 
 export default ContactDetailPage

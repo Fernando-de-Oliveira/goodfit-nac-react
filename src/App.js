@@ -36,7 +36,7 @@ class App extends React.Component{
           </Header>
           <Switch>
             {routes.map((item, index) => (
-              <Route key={index} path={item.route} component={item.view} exat={item.exact}/>
+              <Route key={index} path={item.route} component={item.view} exact={item.exact}/>
             ))}
           </Switch>
         </BrowserRouter>
