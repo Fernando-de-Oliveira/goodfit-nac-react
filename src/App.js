@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect, Switch, BrowserRouter, useParams } from 'react-router-dom'
+import { Route, Redirect, Switch, BrowserRouter, useParams } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
