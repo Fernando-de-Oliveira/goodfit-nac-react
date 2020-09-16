@@ -1,6 +1,6 @@
 import React from 'react'
 import authService from '../../services/auth.service'
-
+import SnackBar from '../../components/snackbar.component'
 import { Redirect } from 'react-router-dom'
 
 class LoginPage extends React.Component {
@@ -10,8 +10,20 @@ class LoginPage extends React.Component {
             username : "",
             password: "",
             redirectTo: null,
-            title: 'Login'
+            title: 'Login',
+            loggedUser: false
         }
+    }
+
+
+    renderSnackBar = () => {
+        console.log("LOG " + this.state.loggedUser)
+        if (this.state.loggedUser) {
+            return <SnackBar status="Login Sucess" show={this.state.loggedUser}/> 
+        } else{
+            return <SnackBar status="Login Error" show={this.state.loggedUser}/> 
+        }
+    
     }
 
     sendLogin = async (event) => {
@@ -21,20 +33,28 @@ class LoginPage extends React.Component {
             nickName : this.state.username,
             password: this.state.password
         }
+        
 
         try {
-            let res = await authService.authenticate(data)
-            console.log("res", res.data)
-            authService.setLoggedUser(res.data.data)
-            this.setState({redirectTo : "/"})
+           // let res = await authService.authenticate(data)
+            //console.log("res", res.data)
+            //authService.setLoggedUser(res.data)
+            this.setState({loggedUser : true})
         } catch (error) {
             console.log(error)
-            alert("Erro ao efeturar login.")
+            this.setState({loggedUser : false})
         }
 
     }
 
     render(){
+
+        if (this.state.redirectTo) {
+            return(
+                <Redirect to={this.state.redirectTo}/>
+            )
+        }
+
         return (
             <div className="container d-flex justify-content-center">
                 <div className="card mt-5 w-50">
@@ -67,6 +87,7 @@ class LoginPage extends React.Component {
                             <button type="submit" className="btn btn-primary">Entrar</button>
                         </form>
                     </div>
+                    {this.renderSnackBar()}
                 </div>
             </div>
         )

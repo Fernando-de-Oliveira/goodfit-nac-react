@@ -8,6 +8,7 @@ import ContactsPage from './pages/contacts/contacts.page'
 import LoginPage from './pages/login/login.page'
 
 import Header from './components/header.component'
+import authService from './services/auth.service';
 
 class App extends React.Component{
 
@@ -17,6 +18,16 @@ class App extends React.Component{
     this.state = {
       userData: null
     }
+  }
+
+
+  async loadUser(){
+    let userData = authService.getLoggedUser()
+    this.setState({userData : userData})
+  }
+
+  componentDidMount(){
+    this.loadUser()
   }
 
   render(){
