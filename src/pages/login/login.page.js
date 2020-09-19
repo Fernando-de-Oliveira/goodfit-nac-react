@@ -1,29 +1,16 @@
 import React from 'react'
-import authService from '../../services/auth.service'
-import SnackBar from '../../components/snackbar.component'
+import authService from '../../services/auth.service';
+import './login.style.scss'
 import { Redirect } from 'react-router-dom'
 
 class LoginPage extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             username : "",
-            password: "",
-            redirectTo: null,
-            title: 'Login',
-            loggedUser: false
+            password : "",
+            redirectTo : null
         }
-    }
-
-
-    renderSnackBar = () => {
-        console.log("LOG " + this.state.loggedUser)
-        if (this.state.loggedUser) {
-            return <SnackBar status="Login Sucess" show={this.state.loggedUser}/> 
-        } else{
-            return <SnackBar status="Login Error" show={this.state.loggedUser}/> 
-        }
-    
     }
 
     sendLogin = async (event) => {
@@ -33,23 +20,23 @@ class LoginPage extends React.Component {
             nickName : this.state.username,
             password: this.state.password
         }
-        
 
         try {
-           // let res = await authService.authenticate(data)
-            //console.log("res", res.data)
-            //authService.setLoggedUser(res.data)
-            this.setState({loggedUser : true})
+            let res = await authService.authenticate(data)
+            console.log("res", res.data)
+            authService.setLoggedUser(res.data.data)
+            this.setState({redirectTo : "/"}, () => this.props.onLogin())
         } catch (error) {
             console.log(error)
-            this.setState({loggedUser : false})
+            alert("Erro ao efeturar login.")
         }
 
     }
 
-    render(){
 
-        if (this.state.redirectTo) {
+    render() {
+
+        if(this.state.redirectTo){
             return(
                 <Redirect to={this.state.redirectTo}/>
             )
@@ -87,7 +74,6 @@ class LoginPage extends React.Component {
                             <button type="submit" className="btn btn-primary">Entrar</button>
                         </form>
                     </div>
-                    {this.renderSnackBar()}
                 </div>
             </div>
         )

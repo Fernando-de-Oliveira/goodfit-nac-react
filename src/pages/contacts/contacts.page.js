@@ -1,6 +1,7 @@
 import React from 'react'
 import authService from '../../services/auth.service';
 import { Redirect } from 'react-router-dom';
+import { contactService } from "../../services/contacts.service";
 
 class ContactsPage extends React.Component {
     constructor(props){

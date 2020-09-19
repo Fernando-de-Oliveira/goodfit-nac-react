@@ -1,6 +1,5 @@
 import React from 'react';
-import { Route, Redirect, Switch, BrowserRouter, useParams } from 'react-router-dom';
-import logo from './logo.svg';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 
 import ContactDetailPage from './pages/contact-detail/contact-detail.page'
@@ -30,6 +29,11 @@ class App extends React.Component{
     this.loadUser()
   }
 
+  logout(){
+    authService.cleanLoggedUser()
+    window.location.reload()
+}
+
   render(){
     const routes = [
       { route : "/contacts", view : ContactsPage, exact : false},
@@ -38,19 +42,21 @@ class App extends React.Component{
     ]
       return (
         <BrowserRouter>
-          <Header title="NAC03">
-            {/* <span>
-              {this.state.userData}
-            </span> */}
-            <h1>GoodFit NAC-03</h1>
-          
-          </Header>
-          <Switch>
+        <Header title="NAC" ref={this.myHeader}>
+            <span>
+                {this.state.userData?.user?.name}
+            </span>
+            <button className="btn btn-primary" onClick={e => this.logout()}>
+                Sair
+            </button>
+        </Header>
+        <Switch>
             {routes.map((item, index) => (
-              <Route key={index} path={item.route} component={item.view} exat={item.exact}/>
+                <Route key={index} path={item.route} component={item.view} exact={item.exact}/>
             ))}
-          </Switch>
-        </BrowserRouter>
+            <Route path="/login" component={props => <LoginPage {...props} onLogin={() => this.loadUser()}/>} />
+        </Switch>
+   </BrowserRouter>
       )
   }
 }
